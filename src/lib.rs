@@ -406,5 +406,15 @@ macro_rules! try_opt {
     })
 }
 
+#[macro_export]
+macro_rules! try_opt_ref {
+    ($exp:expr, $message:expr) => ({
+        match $exp {
+            Some(ref x) => x,
+            None => return Err($crate::Error::new($message, file!(), line!())),
+        }
+    })
+}
+
 /// Alias for `Result`.
 pub type Result<T> = result::Result<T, Error>;
