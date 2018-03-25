@@ -157,7 +157,6 @@
 //! ```
 //!
 
-pub mod oks;
 
 use std::error;
 use std::fmt;
