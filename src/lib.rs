@@ -170,6 +170,7 @@ use std::result;
 ///
 /// [the module level document]: index.html
 ///
+#[derive(Clone)]
 pub struct Error {
     /// File where error occurred.
     pub file: &'static str,
@@ -191,11 +192,21 @@ pub enum ErrorKind {
     Wrapped(Box<error::Error + marker::Send + marker::Sync>),
 }
 
+impl Clone for ErrorKind {
+    fn clone(&self) -> Self {
+        match self {
+            &ErrorKind::String(ref s) => ErrorKind::String(s.clone()),
+            &ErrorKind::Wrapped(ref e) => ErrorKind::String(format!("{}", e)),
+        }
+    }
+}
+
 impl fmt::Debug for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self)
     }
 }
+
 
 impl Error {
     /// Returns a new instance of `Error`.
@@ -271,6 +282,7 @@ impl fmt::Display for Error {
         self.format_xml(f)
     }
 }
+
 
 /// Similar to `try!` macro, but this returns an `Error` instance wrapping the internal error.
 ///
