@@ -327,6 +327,30 @@ macro_rules! try_wrap {
     })
 }
 
+///
+/// # Examples
+///
+/// ```
+/// # #[macro_use] extern crate mm_errors;
+///
+/// use std::result::Result;
+///
+/// use mm_errors::{Error};
+///
+///
+/// # fn main() {
+///     let e = new_error!("test error");
+///     let _wrapped = wrap_error!(e);
+/// # }
+/// ```
+///
+#[macro_export]
+macro_rules! wrap_error {
+    ($exp:expr) => ({
+        $crate::Error::wrap($exp, file!(), line!())
+    })
+}
+
 /// Returns a new instance of `Error`.
 #[macro_export]
 macro_rules! new_error {
